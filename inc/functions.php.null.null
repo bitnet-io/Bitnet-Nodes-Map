@@ -27,17 +27,15 @@ class DogeBridge {
 
     private $pdo;     // include PDO connections
     private $ipinfoToken;     // include the ipcinfo token
-    private $dbsalt;     // include the salt
-    public function __construct($pdo,$ipinfoToken,$dbsalt) {
+    public function __construct($pdo,$ipinfoToken) {
         $this->pdo = $pdo;
         $this->ipinfoToken = $ipinfoToken;
-        $this->dbsalt = $dbsalt;
     }
 
   // update an existent peer
   public function UpdateNode($ip,$version,$subver)
     {
-      $ip_hash = hash('sha256', $ip.$this->dbsalt); // we do not store the IP, insted we create a checksum of the IP for privacy protection
+      $ip_hash = hash('sha256', $ip); // we do not store the IP, insted we create a checksum of the IP for privacy protection
       $db = $this->pdo->query("UPDATE nodes SET
       version = '".$version."',
       subver = '".$subver."',
@@ -50,17 +48,39 @@ class DogeBridge {
   // add a new peer
   public function AddNode($ip,$version,$subver)
     {
-      $ip_hash = hash('sha256', $ip.$this->dbsalt); // we do not store the IP, insted we create a checksum of the IP for privacy protection
+      $pos = strpos($ip, ']:');
+      if ($pos !== false) {
+        $ippre = explode("]:",$ip);
+        $ippre[0] = str_replace("[", "", $ippre[0]);
+      }else{
+          $ippre = explode(":",$ip);
+      };
+      $details = str_replace("'", "", file_get_contents("http://ipinfo.io/".$ippre[0]."?token=".$this->ipinfoToken));
+      $details = json_decode($details);
+      $geo = explode(",",$details->loc);
+
+      $ip_hash = hash('sha256', $ip); // we do not store the IP, insted we create a checksum of the IP for privacy protection
       $db = $this->pdo->query("INSERT INTO `nodes` (
       `ip`,
       `version`,
       `subver`,
-      `date`
+      `date`,
+      `lat`, 
+      `lon`, 
+      `country`,
+      `city`, 
+      `ipinfo`
       ) VALUES (
       '$ip_hash',
       '$version',
       '$subver',
-      '".date('Y-m-d H:i:s')."'
+      '".date('Y-m-d H:i:s')."',
+      '".$geo[0]."',
+      '".$geo[1]."',
+      '".filter_var($details->country, FILTER_SANITIZE_STRING)."',
+      '".filter_var($details->city, FILTER_SANITIZE_STRING)."',
+      '".filter_var($details->org, FILTER_SANITIZE_STRING)."'
+
       );");
 
       // update the GEO corrdinates on the peer added
@@ -72,7 +92,7 @@ class DogeBridge {
    //find a peer
   public function FindNode($ip)
     {
-      $ip_hash = hash('sha256', $ip.$this->dbsalt); // we do not store the IP, insted we create a checksum of the IP for privacy protection
+      $ip_hash = hash('sha256', $ip); // we do not store the IP, insted we create a checksum of the IP for privacy protection
       $db = $this->pdo->query("SELECT * FROM nodes where ip='".$ip_hash."' limit 1");
       if ($db->fetch()){
               return 1;
@@ -95,7 +115,7 @@ class DogeBridge {
       $details = json_decode($details);
       $geo = explode(",",$details->loc);
       if (isset($details->country)){ // make sure ipinfo.io is working
-        $ip_hash = hash('sha256', $ip.$this->dbsalt); // we do not store the IP, insted we create a checksum of the IP for privacy protection
+        $ip_hash = hash('sha256', $ip); // we do not store the IP, insted we create a checksum of the IP for privacy protection
         $db = $this->pdo->query("UPDATE nodes SET
         lat = '".$geo[0]."',
         lon = '".$geo[1]."',
@@ -109,7 +129,7 @@ class DogeBridge {
 
 };
 
-    $d = new DogeBridge($pdo,$ipinfoToken,$dbsalt);
+    $d = new DogeBridge($pdo,$ipinfoToken);
 
     // if cron is running we update the peers, if not, we only validate IP check's
     If (isset($cron)){

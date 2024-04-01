@@ -15,7 +15,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Dogecoin Nodes Map!</title>
+    <title>Bitnet IO Nodes Map!</title>
     <meta name="description" content="Where are the Dogecoin nodes?">
     <meta name="description" content="Coded with the love for the Dogecoin Crypto, you can now see all Dogecoin Nodes on a World Map, in the future Moon and Mars also!">
     <meta name="author" content="All Dogecoin Community!">
@@ -34,16 +34,31 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
     <script src="//unpkg.com/leaflet@1.0.3/dist/leaflet-src.js" integrity="sha512-WXoSHqw/t26DszhdMhOXOkI7qCiv5QWXhH9R7CgvgZMHz1ImlkVQ3uNsiQKu5wwbbxtPzFXd1hK4tzno2VqhpA==" crossorigin=""></script>
     <script src="js/leaflet.markercluster-src.js"></script>
+
+
+<script>
+function on() {
+  document.getElementById("overlay").style.display = "block";
+}
+
+function off() {
+  document.getElementById("overlay").style.display = "none";
+}
+</script>
+
+
+
     <!-- we include all Dogecoin Nodes on the Map -->
     <?php include("inc/markers/inc/DogecoinNodes.php"); ?>
     <!-- Here we show a cool Doge Minner wen the page is loading -->
-    <script type="text/javascript">$(window).on('load', function() { $(".dogeload").fadeOut("slow"); });</script>
+<!--    <script type="text/javascript">$(window).on('load', function() { $(".dogeload").fadeOut("slow"); });</script>-->
   </head>
   <body>
+
     <!-- We Include the Top menu -->
     <?php //include("inc/menu.php"); ?>
     <!-- This is the place to show the cool Doge Minner wen the page is loading -->
-    <div class="dogeload"></div>
+<!--    <div class="dogeload"></div>-->
     <!-- This is the place to show the world map usinf OpenLayers and OpenStreetMap  -->
     <div id="map" class="map"></div>
     <!-- This is the javascript file that loads some of the Markers behaviors and also initialize the OpenLayers with OpenStreetMap  -->
@@ -56,6 +71,8 @@
       </button>
     </div>
     <?php };?>
+
+
     <div class="col">
       <button type="button" class="btn btn-light">
         Total Nodes: <span class="badge bg-dark"><?php echo $i; ?></span>
@@ -74,7 +91,7 @@
 ?>
     <div class="col">
       <button type="button" class="btn btn-primary" style="background-color: rgba(0, 0, 0, 1); border-color: rgba(0, 0, 0, 1)" >
-        SpaceX Starlink Nodes: <span class="badge bg-light" style="color: #000000"><?php echo $starlinknodes; ?></span>
+<!--        SpaceX Starlink Nodes: <span class="badge bg-light" style="color: #000000"><?php echo $starlinknodes; ?></span>-->
       </button>
     </div>
     <!-- we include all markers + the Aditional like Dogecoin Foundation, SpaceX, Tesla etc. -->

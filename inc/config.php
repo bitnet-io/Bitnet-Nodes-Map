@@ -9,26 +9,26 @@
     // Add your Data Base credentials here!
     $dbhost = "localhost";  // put here you database adress
     $dbname = "nodes"; // your DB name
-    $dbuser = ""; // your DB username
+    $dbuser = "root"; // your DB username
     $dbpass = ""; // your DB password
 
     // an random hash to generate a IP Checksum
     $dbsalt = "";
 
     // Add your Dogecoin Core Node credentials here!
-    $rpcuser = "";
-    $rpcpassword = "";
+    $rpcuser = "1";
+    $rpcpassword = "1";
     $dogecoinCoreProtocol = "http://";
-    $dogecoinCoreServer = "";
-    $dogecoinCoreServerPort = 22555;
+    $dogecoinCoreServer = "localhost";
+    $dogecoinCoreServerPort = 9332;
 
      // Your https://ipinfo.io/ Token to get GEO Coordenates from peers
     $ipinfoToken = "";
 
     // Here we define all Dogecoin Core Versions to be found and displayed on bottom of the Map
-    $DogeNodeVersions = array("1.14.5","1.14.6","1.21");
+    $DogeNodeVersions = array("70032");
 
     // Here we difine the message and link that shows on bottom center
-    $DogeNodesBottomMessage = "Want to run your own Dogecoin Full Node?";
-    $DogeNodesBottomMessageLink = "https://github.com/dogecoin/dogecoin/blob/master/doc/getting-started.md";
+    $DogeNodesBottomMessage = "Want to run your own Bitnet IO node";
+    $DogeNodesBottomMessageLink = "https://github.com/bitnet-io/bitnet-core";
 ?>

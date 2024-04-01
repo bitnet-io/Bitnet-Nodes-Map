@@ -1,11 +1,13 @@
 <h1 align="center">
-Dogecoin Nodes Map
+Bitnet IO Nodes Map
 <br><br>
 <img src="https://what-is-dogecoin.com/nodes/img/dogeload.gif" alt="Dogecoin Nodes Map" width="300"/>
 <br><br>
 </h1>
 
 ## How to Install 💻
+
+# requires php 8.3 and apache2 with mariadb-server
 
 1- Get an Hosting  Account tor Web Server that supports ```PHP (V. 7 =>)``` + ```MySQL/MariaDB``` (also works locally with Docker or Xampp for exemple)
 

@@ -1,8 +1,23 @@
 body {
     font-family: 'Comic Neue', cursive !important;
+  background-color: rgba(0,0,0,0.5);
 }
 .leaflet-container {
     font-family: 'Comic Neue', cursive !important;
+  background-color: rgba(0,0,0,0.5);
+}
+#overlay {
+  position: fixed;
+  display: none;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 2;
+  cursor: pointer;
 }
 #progress {
     display: none;
@@ -32,6 +47,7 @@ body {
        -moz-transition:    -moz-transform .3s ease-out, opacity .3s ease-in;
          -o-transition:      -o-transform .3s ease-out, opacity .3s ease-in;
             transition:         transform .3s ease-out, opacity .3s ease-in;
+  background-color: rgba(0,0,0,0.5);
 }
 
 .leaflet-cluster-spider-leg {
@@ -40,9 +56,10 @@ body {
        -moz-transition:    -moz-stroke-dashoffset .3s ease-out, -moz-stroke-opacity .3s ease-in;
          -o-transition:      -o-stroke-dashoffset .3s ease-out, -o-stroke-opacity .3s ease-in;
             transition:         stroke-dashoffset .3s ease-out, stroke-opacity .3s ease-in;
+  background-color: rgba(0,0,0,0.5);
 }
 .marker-cluster-small {
-    background-color: rgba(181, 226, 140, .6);
+  background-color: rgba(0,0,0,0.5);
 }
 .marker-cluster-small div {
     width: 3vw;
@@ -50,10 +67,11 @@ body {
     background: url('../inc/markers/img/yhellowDogeMiner.gif') no-repeat scroll 0 0 transparent;
     background-size: contain;
     cursor: pointer;
+  background-color: rgba(0,0,0,0.5);
 }
 
 .marker-cluster-medium {
-    background-color: rgba(241, 211, 87, .6);
+  background-color: rgba(0,0,0,0.5);
 }
 .marker-cluster-medium div {
     width: 3vw;
@@ -64,7 +82,7 @@ body {
 }
 
 .marker-cluster-large {
-    background-color: rgba(253, 156, 115, .6);
+  background-color: rgba(0,0,0,0.5);
 }
 .marker-cluster-large div {
     width: 3vw;
@@ -84,24 +102,24 @@ body {
 }
 /* IE 6-8 fallback colors */
 .leaflet-oldie .marker-cluster-small {
-    background-color: rgb(181, 226, 140);
+  background-color: rgba(0,0,0,0.5);
 }
 .leaflet-oldie .marker-cluster-small div {
-    background-color: rgb(110, 204, 57);
+  background-color: rgba(0,0,0,0.5);
 }
 
 .leaflet-oldie .marker-cluster-medium {
-    background-color: rgb(241, 211, 87);
+  background-color: rgba(0,0,0,0.5);
 }
 .leaflet-oldie .marker-cluster-medium div {
-    background-color: rgb(240, 194, 12);
+  background-color: rgba(0,0,0,0.5);
 }
 
 .leaflet-oldie .marker-cluster-large {
-    background-color: rgb(253, 156, 115);
+  background-color: rgba(0,0,0,0.5);
 }
 .leaflet-oldie .marker-cluster-large div {
-    background-color: rgb(241, 128, 23);
+  background-color: rgba(0,0,0,0.5);
 }
 
 .marker-cluster {

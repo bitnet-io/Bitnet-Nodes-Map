@@ -15,22 +15,22 @@
         iconUrl: 'https://<?php echo $_SERVER['SERVER_NAME'].'/'.trim(dirname($_SERVER["PHP_SELF"]),'/'); ?>/inc/markers/img/foundation.gif'
     });
 
-    var teslanIcon = new LeafIcon({
-        iconUrl: 'https://<?php echo $_SERVER['SERVER_NAME'].'/'.trim(dirname($_SERVER["PHP_SELF"]),'/'); ?>/inc/markers/img/tesla.gif'
-    });
-    var spacexIcon = new LeafIcon({
-        iconUrl: 'https://<?php echo $_SERVER['SERVER_NAME'].'/'.trim(dirname($_SERVER["PHP_SELF"]),'/'); ?>/inc/markers/img/spacex.gif',
-        iconSize:     [58, 38]
-    });
+//    var teslanIcon = new LeafIcon({
+//        iconUrl: 'https://<?php echo $_SERVER['SERVER_NAME'].'/'.trim(dirname($_SERVER["PHP_SELF"]),'/'); ?>/inc/markers/img/tesla.gif'
+//    });
+//    var spacexIcon = new LeafIcon({
+//        iconUrl: 'https://<?php echo $_SERVER['SERVER_NAME'].'/'.trim(dirname($_SERVER["PHP_SELF"]),'/'); ?>/inc/markers/img/spacex.gif',
+//        iconSize:     [58, 38]
+//    });
 
-    var reddogeIcon = new LeafIcon({
-        iconUrl: 'https://<?php echo $_SERVER['SERVER_NAME'].'/'.trim(dirname($_SERVER["PHP_SELF"]),'/'); ?>/inc/markers/img/redDogeMiner.gif',
-        iconSize:     [68, 48]
-    });
-    var starlinkdogeIcon = new LeafIcon({
-        iconUrl: 'https://<?php echo $_SERVER['SERVER_NAME'].'/'.trim(dirname($_SERVER["PHP_SELF"]),'/'); ?>/inc/markers/img/starlinkDogeMiner.gif',
-        iconSize:     [48, 70]
-    });
+//    var reddogeIcon = new LeafIcon({
+//        iconUrl: 'https://<?php echo $_SERVER['SERVER_NAME'].'/'.trim(dirname($_SERVER["PHP_SELF"]),'/'); ?>/inc/markers/img/redDogeMiner.gif',
+//        iconSize:     [68, 48]
+//    });
+//    var starlinkdogeIcon = new LeafIcon({
+//        iconUrl: 'https://<?php echo $_SERVER['SERVER_NAME'].'/'.trim(dirname($_SERVER["PHP_SELF"]),'/'); ?>/inc/markers/img/starlinkDogeMiner.gif',
+//        iconSize:     [48, 70]
+//    });
 
     var starshipIcon = new LeafIcon({
         iconUrl: 'https://<?php echo $_SERVER['SERVER_NAME'].'/'.trim(dirname($_SERVER["PHP_SELF"]),'/'); ?>/inc/markers/img/starship.png',
@@ -98,8 +98,8 @@
      var theMarker = {};
 
      // we add aditional markes to the map
-     var title = "Dogecoin Foundation"; theMarker = L.marker([51.5122267680323,-0.08994483058905306], { title: title,icon: dogeFoundationIcon }).addTo(map).bindPopup(title);
-     var title = '<iframe width="100%" style="min-width:300px" height="315" src="https://www.youtube.com/embed/p4OixRuu2yA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br><br>Black Rock City<br><br> <a href="https://burningman.org/" target="_blank">burningman.org</a>'; theMarker = L.marker([40.787231388742995, -119.20645088497601], { title: title,icon: burnmanIcon }).addTo(map).bindPopup(title);
+//     var title = "Dogecoin Foundation"; theMarker = L.marker([51.5122267680323,-0.08994483058905306], { title: title,icon: dogeFoundationIcon }).addTo(map).bindPopup(title);
+//     var title = '<iframe width="100%" style="min-width:300px" height="315" src="https://www.youtube.com/embed/p4OixRuu2yA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br><br>Black Rock City<br><br> <a href="https://burningman.org/" target="_blank">burningman.org</a>'; theMarker = L.marker([40.787231388742995, -119.20645088497601], { title: title,icon: burnmanIcon }).addTo(map).bindPopup(title);
 
      var title = "Tesla Fremont Factory"; theMarker = L.marker([37.49355,-121.94361], { title: title,icon: teslanIcon }).addTo(map).bindPopup(title);
      var title = "Tesla Giga Shanghai"; theMarker = L.marker([30.87594255400217,121.77175311534269], { title: title,icon: teslanIcon }).addTo(map).bindPopup(title);

@@ -1,6 +1,6 @@
-<?php
+<?php 
 /*
-					COPYRIGHT
+                    COPYRIGHT
 
 Copyright 2007 Sergio Vaccaro <sergio@inservibile.org>
 
@@ -29,218 +29,136 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 class jsonRPCClient {
 
-	const DEBUG_REQUEST = 0x1;
-	const DEBUG_RESPONSE = 0x2;
+    /**
+     * Debug state
+     *
+     * @var boolean
+     */
+    private $debug;
 
-	/**
-	 * Debug state
-	 * Bitwise combination of debug flags (DEBUG_REQUEST, DEBUG_RESPONSE)
-	 *
-	 * @var boolean
-	 */
-	protected $debug = 0;
+    /**
+     * The server URL
+     *
+     * @var string
+     */
+    private $url;
+    /**
+     * The request id
+     *
+     * @var integer
+     */
+    private $id;
+    /**
+     * If true, notifications are performed instead of requests
+     *
+     * @var boolean
+     */
+    private $notification = false;
 
-	/**
-	 * The server URL
-	 *
-	 * @var string
-	 */
-	protected $url = null;
-	/**
-	 * The request id
-	 *
-	 * @var integer
-	 */
-	protected static $id = 0;
-	/**
-	 * If true, notifications are performed instead of requests
-	 *
-	 * @var boolean
-	 */
-	protected $notification = false;
-	/**
-	 *
-	 * @var string
-	 */
-	protected $proxy = '';
-	/**
-	 *
-	 * @var array
-	 */
-	protected $headers = array();
+    /**
+     * Takes the connection parameters
+     *
+     * @param string $url
+     * @param boolean $debug
+     */
+    public function __construct($url,$debug = false) {
+        // server URL
+        $this->url = $url;
+        // proxy
+        empty($proxy) ? $this->proxy = '' : $this->proxy = $proxy;
+        // debug state
+        empty($debug) ? $this->debug = false : $this->debug = true;
+        // message id
+        $this->id = 1;
+    }
 
-	/**
-	 * Takes the connection parameters
-	 *
-	 * @param string $url
-	 * @param boolean $debug
-	 * @param string $proxy
-	 */
-	public function __construct($url, $debug = false, $proxy = '') {
-		// server URL
-		$this->url = $url;
-		// debug state
-		$this->debug = $debug ? self::DEBUG_REQUEST | self::DEBUG_RESPONSE : 0;
-		// proxy
-		$this->proxy = $proxy;
-		$this->restoreDefaultHeaders();
-	}
+    /**
+     * Sets the notification state of the object. In this state, notifications are performed, instead of requests.
+     *
+     * @param boolean $notification
+     */
+    public function setRPCNotification($notification) {
+        empty($notification) ?
+                            $this->notification = false
+                            :
+                            $this->notification = true;
+    }
 
-	/**
-	 * 
-	 * @param string $type
-	 * @param string $value
-	 */
-	public function setHeader($type, $value) {
-		$this->headers[$type] = $value;
-	}
+    /**
+     * Performs a jsonRCP request and gets the results as an array
+     *
+     * @param string $method
+     * @param array $params
+     * @return array
+     */
+    public function __call($method,$params) {
 
-	/**
-	 * Remove single header from request
-	 * @param string $type
-	 */
-	public function removeHeader($type) {
-		unset($this->headers[$type]);
-	}
+        // check
+        if (!is_scalar($method)) {
+            throw new Exception('Method name has no scalar value');
+        }
 
-	/**
-	 * Restore default header 
-	 */
-	public function restoreDefaultHeaders() {
-		$this->headers = array();
-		$this->headers['Content-type'] = 'application/json';
-	}
+        // check
+        if (is_array($params)) {
+            // no keys
+            $params = array_values($params);
+        } else {
+            throw new Exception('Params must be given as array');
+        }
 
-	/**
-	 * Set debug state
-	 * @param int $debug bitwise combination of debug flags
-	 */
-	public function setDebug($debug) {
-		$this->debug = (int) $debug;
-	}
+        // sets notification or request task
+        if ($this->notification) {
+            $currentId = NULL;
+        } else {
+            $currentId = $this->id;
+        }
 
-	/**
-	 * Set proxy to be used in connection
-	 * @param string $proxy
-	 */
-	public function setProxy($proxy) {
-		$this->proxy = $proxy;
-	}
+        // prepares the request
+        $request = array(
+                        'method' => $method,
+                        'params' => $params,
+                        'id' => $currentId
+                        );
+        $request = json_encode($request);
+        $this->debug && $this->debug.='***** Request *****'."\n".$request."\n".'***** End Of request *****'."\n\n";
 
-	/**
-	 * Sets the notification state of the object. In this state, notifications are performed, instead of requests.
-	 *
-	 * @param boolean $notification
-	 */
-	public function setRPCNotification($notification) {
-		$this->notification = (bool) $notification;
-	}
+        // performs the HTTP POST
+        $opts = array ('http' => array (
+                            'method'  => 'POST',
+                            'header'  => 'Content-type: application/json',
+                            'content' => $request
+                            ));
+        $context  = stream_context_create($opts);
+        if ($fp = fopen($this->url, 'r', false, $context)) {
+            $response = '';
+            while($row = fgets($fp)) {
+                $response.= trim($row)."\n";
+            }
+            $this->debug && $this->debug.='***** Server response *****'."\n".$response.'***** End of server response *****'."\n";
+            $response = json_decode($response,true);
+        } else {
+            throw new Exception('Unable to connect to '.$this->url);
+        }
 
-	/**
-	 *
-	 * @param int $debug bitwise combination of debug flags
-	 * @param string $message
-	 */
-	protected function debugLog($debug, $message) {
-		if ($this->debug & $debug) {
-			echo $message . PHP_EOL . PHP_EOL;
-		}
-	}
+        // debug output
+        if ($this->debug) {
+            echo nl2br($debug);
+        }
 
-	/**
-	 * Performs a jsonRCP request and gets the results as an array
-	 *
-	 * @param string $method
-	 * @param array $params
-	 * @return array|boolean
-	 * @throws Exception
-	 */
-	public function __call($method, $params) {
+        // final checks and return
+        if (!$this->notification) {
+            // check
+            if ($response['id'] != $currentId) {
+                throw new Exception('Incorrect response id (request id: '.$currentId.', response id: '.$response['id'].')');
+            }
+            if (!is_null($response['error'])) {
+                throw new Exception('Request error: '.$response['error']);
+            }
 
-		++static::$id;
+            return $response['result'];
 
-		// check
-		if (!is_scalar($method)) {
-			throw new Exception('Method name has no scalar value');
-		}
-
-		// check
-		if (is_array($params)) {
-			// no keys
-			$params = array_values($params);
-		} else {
-			throw new Exception('Params must be given as array');
-		}
-
-		// sets notification or request task
-		if ($this->notification) {
-			$currentId = NULL;
-		} else {
-			$currentId = static::$id;
-		}
-
-		$request_data = array(
-			'method' => $method,
-			'params' => $params,
-			'id' => $currentId
-		);
-		
-		if ($this->proxy) {
-			$request_data['proxy'] = $this->proxy;
-		}
-
-		// prepares the request
-		$request = json_encode($request_data);
-		$this->debugLog(self::DEBUG_REQUEST, '***** Request *****' . PHP_EOL . $request . PHP_EOL . '***** End Of request *****');
-
-		$this->headers['Content-Length'] = strlen($request);
-		$headers = array();
-		foreach($this->headers as $key => $value) {
-			$headers[] = $key . ': ' . $value;
-		}
-
-		// performs the HTTP POST
-		$opts = array ('http' => array (
-							'method'  => 'POST',
-							'header'  => implode("\r\n", $headers),
-							'content' => $request
-							));
-
-		$context  = stream_context_create($opts);
-
-		$this->headers = array();
-
-		$fp = fopen($this->url, 'r', false, $context);// or die("Error connecting to Dogecoin node! Try again later!");
-
-		if (!$fp) {
-			throw new Exception('Unable to connect to node!');
-		}
-
-		$response = '';
-		while (!feof($fp)) {
-			$response .= trim(fgets($fp)) . "\n";
-		}
-		fclose($fp);
-
-		$this->debugLog(self::DEBUG_RESPONSE, '***** Server response *****' . PHP_EOL . $response . '***** End of server response *****');
-
-		// final checks and return
-		if (!$this->notification) {
-			$response = json_decode($response, true);
-
-			// check
-			if ($response['id'] != $currentId) {
-				throw new Exception('Incorrect response id (request id: ' . $currentId . ', response id: ' . $response['id'] . ')');
-			}
-			if (!is_null($response['error'])) {
-				throw new Exception('Request error: ' . $response['error']);
-			}
-
-			return $response['result'];
-		}
-		unset($response);
-
-		return true;
-	}
-
+        } else {
+            return true;
+        }
+    }
 }
