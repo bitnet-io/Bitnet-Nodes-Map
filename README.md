@@ -1,9 +1,18 @@
 <h1 align="center">
 Bitnet IO Nodes Map
 <br><br>
-<img src="https://what-is-dogecoin.com/nodes/img/dogeload.gif" alt="Dogecoin Nodes Map" width="300"/>
 <br><br>
 </h1>
+
+fix using phpmyadmin
+
+php /var/www/html/nodes/cron.php
+
+Uncaught PDOException: SQLSTATE[HY000]: General error: 1364
+
+![s1](https://i.stack.imgur.com/26DXU.png)
+
+
 
 ## How to Install 💻
 
