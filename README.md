@@ -10,7 +10,9 @@ php /var/www/html/nodes/cron.php
 
 Uncaught PDOException: SQLSTATE[HY000]: General error: 1364
 
-![s1](https://i.stack.imgur.com/26DXU.png)
+![s1](stack.imgur.com/26DXU.png)
+
+![s1](https://github.com/bitnet-io/Bitnet-Nodes-Map/releases/download/fix-phpmyadmin-mysql-flags/26DXU.png)
 
 
 
